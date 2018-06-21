@@ -1,5 +1,6 @@
 package com.bigpig.manga.reader.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PageDto extends BaseDto {
-    int no;
-    String path;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SequenceDto {
+    int nextValue;
 }
