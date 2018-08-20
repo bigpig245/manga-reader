@@ -6,11 +6,12 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
-import static com.bigpig.manga.reader.utils.Constant.DATABASE;
-import static com.bigpig.manga.reader.utils.Constant.DATABASE_NAME;
+import static com.bigpig.manga.reader.utils.Constant.*;
 
 public abstract class BaseDao<T extends BaseDto> {
     protected MongoDatabase db;
@@ -22,7 +23,11 @@ public abstract class BaseDao<T extends BaseDto> {
         sequenceDao = new SequenceDao();
     }
 
-    public abstract void saveItem(T entity);
+    public void saveItem(T entity) {
+        Map map = OBJECT_MAPPER.convertValue(entity, Map.class);
+        getCollection().insertOne(new Document(map));
+        System.out.println("Insert into " + getCollectionName() + " successfull, id = " + entity.getId());
+    }
 
     public void save(T entity) {
         int nextValue = sequenceDao.nextValue(getCollectionId());
